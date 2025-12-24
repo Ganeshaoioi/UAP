@@ -15,8 +15,6 @@
 - Nama : Ganesha Mahardika Prasetya
 - NIM  : 202210370311156
 - Kelas  : Pembelajaran Mesin C
-- Hobi  : Pasang 10 Tim
-- Cita-cita : Nonton JKT48
 
 ---
 
