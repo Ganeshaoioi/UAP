@@ -10,7 +10,7 @@
 
 ---
 
-## Identitas Mahasiswa
+## Biodata
 
 - Nama : Ganesha Mahardika Prasetya
 - NIM  : 202210370311156
@@ -200,3 +200,45 @@ Meskipun mampu mengenali beberapa emosi dengan cukup baik, performanya masih ber
 | CNN        | 0.5990     | Model baseline tanpa pretrained. Mampu mengenali emosi dominan namun kurang optimal pada emosi kompleks yang memiliki kemiripan visual.             |
 | ResNet50   | 0.6000     | Model dengan performa terbaik dan paling stabil. Transfer learning membantu ekstraksi fitur wajah yang lebih kuat dan seimbang          | 
 | MobileNetV2 | 0.5311     | Model ringan dan efisien. Cocok untuk deployment, namun memiliki akurasi paling rendah di antara ketiga model.             |
+
+### Visualisasi Evaluasi Model
+| **CNN** | **ResNet50** | **MobileNetV2** |
+|---------|---------|-------------------|
+| ![Confusion Matrix CNN Base](assets/confusion_matrix_cnn.png) | ![Confusion Matrix ResNet50](assets/confusion_matrix_resnet.png) | ![Confusion Matrix MobileNetV2](assets/confusion_matrix_mobilenet.png) |
+
+### Grafik Loss dan Accuracy
+| **CNN** | **ResNet50** | **MobileNetV2** |
+|---------|---------|-------------------|
+| ![Accuracy & Loss CNN Base](assets/acc_loss_cnn.png) | ![Accuracy & Loss ResNet50](assets/acc_loss_resnet.png) | ![Accuracy & Loss MobileNetV2](assets/acc_loss_mobilenet.png) |
+
+
+---
+## Streamlit
+#### 1. Pilih Model
+Di sidebar Pengaturan Model, pilih salah satu model yang ingin digunakan:
+- CNN
+- ResNet50
+- MobileNetV2
+<p align="center">
+  <img src="assets/sidebar.png" width="500">
+</p>
+
+#### 2. Upload Citra Wajah
+- Klik tombol Browse files atau drag & drop file gambar wajah.
+- Format yang didukung: JPG, JPEG, PNG.
+- Ukuran maksimal: 200 MB per file.
+<p align="center">
+  <img src="assets/Upload.png" width="500">
+</p>
+
+#### 3. Lihat Hasil Prediksi
+Setelah upload:
+- Bagian Hasil Prediksi menampilkan emosi utama yang terdeteksi beserta confidence dalam persentase.
+- Bagian Top-3 Prediction menampilkan tiga kemungkinan emosi teratas beserta probabilitasnya.
+<p align="center">
+  <img src="assets/full.png" width="500">
+</p>
+
+#### Interpretasi Hasil
+- Confidence tinggi = model cukup yakin dengan prediksi emosi.
+- Top-3 Prediction = berguna jika wajah menampilkan emosi campuran atau ambigu.
