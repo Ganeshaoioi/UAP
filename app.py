@@ -13,6 +13,50 @@ st.set_page_config(
 )
 
 # =====================
+# CUSTOM CSS (NO WHITE BACKGROUND)
+# =====================
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+}
+
+section[data-testid="stSidebar"] {
+    background-color: #020617;
+}
+
+.pred-card {
+    padding: 28px;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    box-shadow: 0px 15px 30px rgba(0,0,0,0.35);
+}
+
+.pred-title {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.pred-conf {
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+hr {
+    border: 1px solid #334155;
+}
+
+div[data-testid="stFileUploader"] {
+    background-color: #020617;
+    padding: 15px;
+    border-radius: 12px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# =====================
 # CONSTANTS
 # =====================
 IMG_SIZE = (224, 224)
@@ -21,6 +65,26 @@ CLASS_NAMES = [
     "angry", "disgust", "fear",
     "happy", "neutral", "sad", "surprise"
 ]
+
+EMOTION_COLOR = {
+    "angry": "#ef4444",
+    "disgust": "#22c55e",
+    "fear": "#8b5cf6",
+    "happy": "#facc15",
+    "neutral": "#64748b",
+    "sad": "#3b82f6",
+    "surprise": "#ec4899"
+}
+
+EMOJI = {
+    "angry": "😠",
+    "disgust": "🤢",
+    "fear": "😨",
+    "happy": "😄",
+    "neutral": "😐",
+    "sad": "😢",
+    "surprise": "😲"
+}
 
 # =====================
 # LOAD MODELS
@@ -62,14 +126,15 @@ CNN Base • ResNet50 • MobileNetV2
 # =====================
 with st.sidebar:
     st.header("⚙️ Pengaturan Model")
+
     model_choice = st.radio(
         "Pilih Model",
         ["CNN Base", "ResNet50", "MobileNetV2"]
     )
 
     st.markdown("---")
-    st.caption("📌 Dataset: Facial Emotion Recognition (Kaggle)")
-    st.caption("🎓 UAP")
+    st.caption("Dataset: Facial Emotion Recognition")
+    st.caption("UAP Praktikum ML")
 
 # =====================
 # MAIN LAYOUT
@@ -77,9 +142,9 @@ with st.sidebar:
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    st.subheader("📷 Upload Gambar")
+    st.subheader("Upload Citra Wajah")
     uploaded_file = st.file_uploader(
-        "Masukkan citra wajah",
+        "Format JPG / PNG",
         type=["jpg", "jpeg", "png"]
     )
 
@@ -103,39 +168,37 @@ with col2:
         pred_idx = np.argmax(preds)
         confidence = preds[0][pred_idx] * 100
 
-        # Highlight result
+        emotion = CLASS_NAMES[pred_idx]
+        color = EMOTION_COLOR[emotion]
+        emoji = EMOJI[emotion]
+
+        # === RESULT CARD ===
         st.markdown(f"""
-        <div style="
-            background-color:#f0f2f6;
-            padding:20px;
-            border-radius:15px;
-            text-align:center;
-        ">
-        <h2> {CLASS_NAMES[pred_idx].upper()}</h2>
-        <p style="font-size:20px;">Confidence</p>
-        <h3>{confidence:.2f}%</h3>
+        <div class="pred-card" style="background:{color};">
+            <div class="pred-title">{emoji} {emotion.upper()}</div>
+            <div class="pred-conf">Confidence: {confidence:.2f}%</div>
         </div>
         """, unsafe_allow_html=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Confidence bar
-        st.subheader("📊 Distribusi Probabilitas")
-        prob_dict = {
-            CLASS_NAMES[i]: float(preds[0][i])
-            for i in range(len(CLASS_NAMES))
-        }
-        st.bar_chart(prob_dict)
+        # === TOP 3 PREDICTION ===
+        st.subheader("Top-3 Prediction")
+        top3_idx = preds[0].argsort()[-3:][::-1]
+
+        for i in top3_idx:
+            st.progress(float(preds[0][i]), text=f"{CLASS_NAMES[i]} ({preds[0][i]*100:.2f}%)")
 
     else:
-        st.info("⬅️ Silakan upload gambar terlebih dahulu")
+        st.info("Upload gambar terlebih dahulu")
 
 # =====================
 # FOOTER
 # =====================
 st.markdown("""
 <hr>
-<p style='text-align:center; color:gray;'>
-Dibuat untuk Ujian Akhir Praktikum 
+<p style='text-align:center; color:#cbd5f5;'>
+Dibuat oleh Ganesha Mahardika Prasetya<br>
+Ujian Akhir Praktikum Machine Learning
 </p>
 """, unsafe_allow_html=True)
