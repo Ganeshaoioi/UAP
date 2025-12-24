@@ -1,6 +1,34 @@
-.py[cod]
+# ===============================
+# DATASET & DATA SPLIT
+# ===============================
+DatasetUAP/
+data/
+
+# ===============================
+# MODEL FILES
+# ===============================
+models/
+*.keras
+*.h5
+
+# ===============================
+# PYTHON ENVIRONMENT
+# ===============================
+.venv/
+.pdm-python
 __pycache__/
+*.pyc
+
+# ===============================
+# JUPYTER
+# ===============================
+.ipynb_checkpoints/
+
+# ===============================
+# CACHE & OS
+# ===============================
 .mypy_cache/
 .pytest_cache/
 .ruff_cache/
-.pdm-python
+.DS_Store
+Thumbs.db
